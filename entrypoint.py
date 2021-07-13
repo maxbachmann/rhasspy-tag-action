@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import json
 import requests
+import sys
 
 subprocess.run(['git', 'fetch', '--depth=1', 'origin', '+refs/tags/*:refs/tags/*'])
 results = subprocess.run(['git', 'tag'], capture_output=True).stdout.decode().split()
@@ -14,7 +15,14 @@ version = max(Version.fromString(tag) for tag in results) if results else Versio
 # get current commit hash for tag
 commit = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True).stdout.decode().strip()
 
-with open('VERSION') as f:
+if len(sys.argv) > 1:
+    version_file = sys.argv[1]
+else:
+    version_file = 'VERSION'
+
+print(f'version file: {version_file}')
+
+with open(version_file) as f:
     new_version_string = f.readline()
 
 new_version = Version.fromString(new_version_string)

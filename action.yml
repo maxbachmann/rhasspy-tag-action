@@ -4,6 +4,13 @@ author: 'Max Bachmann'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+      - ${{ inputs.version_file }}
+inputs:
+  version_file:
+    description: 'Path to VERSION file'
+    required: false
+    default: 'VERSION'
 outputs:
   new_tag:
     description: 'The new tag (only set when a new tag is added)'
